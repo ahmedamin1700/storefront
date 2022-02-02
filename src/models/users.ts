@@ -1,3 +1,4 @@
+import { hash } from 'bcrypt';
 import Client from '../database';
 
 export interface User {
@@ -37,7 +38,11 @@ class UsersRepository {
       const connection = await Client.connect();
       const sql =
         'INSERT INTO users (username, password, firstname, lastname) VALUES ($1, $2, $3, $4) RETURNING *';
-      const result = await connection.query(sql, [username, password, firstname, lastname]);
+
+      // hashing password before saving in database.
+      const hashedPassword = hash(password + process.env.PEPPER, Number(process.env.SALT));
+
+      const result = await connection.query(sql, [username, hashedPassword, firstname, lastname]);
       return result.rows[0];
     } catch (error) {
       throw new Error(`Can't create user with this username ${username}`);
