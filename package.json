@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "",
   "main": "server.ts",
-  "type": "module",
   "scripts": {
     "db-migrate": "db-migrate",
     "lint": "eslint --ext .ts .",
