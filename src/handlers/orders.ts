@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import auth from '../middlewares/auth';
 import OrdersRepository from '../models/orders';
 
 const repository = new OrdersRepository();
@@ -27,8 +28,8 @@ const completeUserOrders = async (req: Request, res: Response) => {
 };
 
 const orders_routes = (app: express.Application) => {
-  app.get('/orders/:id/current', currentUserOrder);
-  app.get('/orders/:id/complete', completeUserOrders);
+  app.get('/orders/:id/current', auth, currentUserOrder);
+  app.get('/orders/:id/complete', auth, completeUserOrders);
 };
 
 export default orders_routes;

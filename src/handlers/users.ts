@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import UsersRepository from '../models/users';
+import auth from '../middlewares/auth';
 
 const repository = new UsersRepository();
 
@@ -54,8 +55,8 @@ const authenticate = async (req: Request, res: Response) => {
 };
 
 const users_routes = (app: express.Application) => {
-  app.get('/users', index);
-  app.get('/users/:id', show);
+  app.get('/users', auth, index);
+  app.get('/users/:id', auth, show);
   app.post('/users', create);
   app.post('/users/authenticate', authenticate);
 };
