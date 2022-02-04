@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import auth from '../middlewares/auth';
 import ProductsRepository from '../models/products';
 
 const repository = new ProductsRepository();
@@ -49,7 +50,7 @@ const getByCategory = async (req: Request, res: Response) => {
 const products_routes = (app: express.Application) => {
   app.get('/products', index);
   app.get('/products/:id', show);
-  app.post('/products', create);
+  app.post('/products', auth, create);
   app.get('/products/category/:category', getByCategory);
 };
 
