@@ -9,7 +9,8 @@
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "start": "node src/server.ts",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
-    "test": "jasmine-ts",
+    "pretest": "db-migrate up --env test",
+    "test": "NODE_ENV=test jasmine-ts && db-migrate reset --env test",
     "build": "tsc"
   },
   "author": "Udacity",
