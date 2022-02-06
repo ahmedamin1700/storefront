@@ -32,7 +32,7 @@ class UsersRepository {
     }
   };
 
-  create = async (user: User): Promise<User | Error> => {
+  create = async (user: User): Promise<User> => {
     const { username, password, firstname, lastname } = user;
     try {
       const connection = await Client.connect();

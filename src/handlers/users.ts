@@ -31,7 +31,6 @@ const create = async (req: Request, res: Response) => {
   const { username, password, firstname, lastname } = req.body;
   try {
     const user = await repository.create({ username, password, firstname, lastname });
-    console.log(user);
 
     return res.status(201).json(user);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
