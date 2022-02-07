@@ -31,16 +31,16 @@ describe('Product model', () => {
 
   it('should get products by category', async () => {
     const result: Product[] = await repo.productsByCategory('soft drink');
-    expect(result[0].name).toBe('Pepsi');
+    expect(result[1].name).toBe('Pepsi');
   });
 
   it('should show a specific product using show method', async () => {
-    const result: Product = await repo.show(1);
+    const result: Product = await repo.show(2);
     expect(result.name).toEqual('Pepsi');
   });
 
   it('should list all users using index method', async () => {
     const result: Product[] = await repo.index();
-    expect(result.length).toEqual(1);
+    expect(result.length).toEqual(2);
   });
 });
