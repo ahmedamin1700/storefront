@@ -15,6 +15,7 @@ class UsersRepository {
       const connection = await Client.connect();
       const sql = 'SELECT * FROM users';
       const result = await connection.query(sql);
+      connection.release();
       return result.rows;
     } catch (error) {
       throw new Error('can not return users.');
@@ -26,13 +27,14 @@ class UsersRepository {
       const connection = await Client.connect();
       const sql = 'SELECT * FROM users WHERE id=$1';
       const result = await connection.query(sql, [id]);
+      connection.release();
       return result.rows[0];
     } catch (error) {
       throw new Error(`can't return user with id ${id}`);
     }
   };
 
-  create = async (user: User): Promise<User | Error> => {
+  create = async (user: User): Promise<User> => {
     const { username, password, firstname, lastname } = user;
     try {
       const connection = await Client.connect();
@@ -48,6 +50,7 @@ class UsersRepository {
       const hashedPassword = await hash(password + process.env.PEPPER, Number(process.env.SALT));
 
       result = await connection.query(sql, [username, hashedPassword, firstname, lastname]);
+      connection.release();
       return result.rows[0];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -61,6 +64,7 @@ class UsersRepository {
       const sql = 'SELECT * FROM users WHERE username=$1';
 
       const result = await connection.query(sql, [username]);
+      connection.release();
 
       // if user doesn't exists.
       if (!result.rows[0]) throw new Error('user does not exsits.');

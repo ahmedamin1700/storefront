@@ -13,6 +13,7 @@ class ProductsRepository {
       const connection = await Client.connect();
       const sql = 'SELECT * FROM products';
       const result = await connection.query(sql);
+      connection.release();
       return result.rows;
     } catch (error) {
       throw new Error('can not return products.');
@@ -24,6 +25,7 @@ class ProductsRepository {
       const connection = await Client.connect();
       const sql = 'SELECT * FROM products WHERE id=$1';
       const result = await connection.query(sql, [id]);
+      connection.release();
       return result.rows[0];
     } catch (error) {
       throw new Error(`can't return product with id ${id}.`);
@@ -36,6 +38,7 @@ class ProductsRepository {
       const connection = await Client.connect();
       const sql = 'INSERT INTO products (name, price, category) VALUES ($1, $2, $3) RETURNING *';
       const result = await connection.query(sql, [name, price, category]);
+      connection.release();
       return result.rows[0];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -49,6 +52,7 @@ class ProductsRepository {
       const sql = 'SELECT * FROM products WHERE category=$1';
 
       const result = await connection.query(sql, [category]);
+      connection.release();
 
       return result.rows;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

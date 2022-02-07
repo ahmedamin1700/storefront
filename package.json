@@ -9,7 +9,8 @@
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "start": "node src/server.ts",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
-    "test": "jasmine-ts",
+    "pretest": "db-migrate up --env test",
+    "test": "NODE_ENV=test jasmine-ts && db-migrate reset --env test",
     "build": "tsc"
   },
   "author": "Udacity",
@@ -30,6 +31,7 @@
     "@types/jasmine": "^3.6.3",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/pg": "^7.14.7",
+    "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.10.2",
     "@typescript-eslint/parser": "^5.10.2",
     "db-migrate": "^0.11.13",
@@ -39,6 +41,7 @@
     "jasmine-spec-reporter": "^6.0.0",
     "jasmine-ts": "^0.3.0",
     "prettier": "^2.5.1",
+    "supertest": "^6.2.2",
     "ts-node": "^9.1.1",
     "tsc-watch": "^4.2.9"
   }

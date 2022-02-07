@@ -19,7 +19,7 @@ class OrdersRepository {
       WHERE user_id=$1 AND status='active'`;
 
       const result = await connection.query(sql, [user_id]);
-      console.log(result);
+      connection.release();
 
       return result.rows[0];
     } catch (error) {
@@ -37,6 +37,8 @@ class OrdersRepository {
       WHERE user_id=$1 AND status='active'`;
 
       const result = await connection.query(sql, [user_id]);
+      connection.release();
+
       return result.rows;
     } catch (error) {
       throw new Error('can not return current orders.');
