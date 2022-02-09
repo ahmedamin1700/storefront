@@ -5,6 +5,9 @@
   "main": "server.ts",
   "scripts": {
     "db-migrate": "db-migrate",
+    "migrate:up": "db-migrate up --env dev",
+    "migrate:reset": "db-migrate reset --env dev",
+    "seed": "yarn migrate:reset && yarn migrate:up && ts-node src/seed.ts",
     "lint": "eslint --ext .ts .",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "start": "node src/server.ts",
@@ -40,6 +43,8 @@
     "jasmine": "^3.6.4",
     "jasmine-spec-reporter": "^6.0.0",
     "jasmine-ts": "^0.3.0",
+    "loading-cli": "^1.1.0",
+    "minifaker": "^1.34.0",
     "prettier": "^2.5.1",
     "supertest": "^6.2.2",
     "ts-node": "^9.1.1",
