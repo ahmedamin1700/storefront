@@ -40,9 +40,8 @@ class ProductsRepository {
       const result = await connection.query(sql, [name, price, category]);
       connection.release();
       return result.rows[0];
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      throw new Error(`can't create product with this name ${name} ${error.message}.`);
+    } catch (error) {
+      throw new Error(`can't create product with this name ${name} ${(error as Error).message}.`);
     }
   };
 
@@ -55,9 +54,10 @@ class ProductsRepository {
       connection.release();
 
       return result.rows;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      throw new Error(`can not find products by this category ${category} ${error.message}.`);
+    } catch (error) {
+      throw new Error(
+        `can not find products by this category ${category} ${(error as Error).message}.`,
+      );
     }
   };
 }

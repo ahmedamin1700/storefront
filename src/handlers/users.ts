@@ -9,9 +9,8 @@ const index = async (req: Request, res: Response) => {
   try {
     const users = await repository.index();
     return res.status(200).json(users);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    return res.status(400).json(error.message);
+  } catch (error) {
+    return res.status(400).json((error as Error).message);
   }
 };
 
@@ -21,9 +20,8 @@ const show = async (req: Request, res: Response) => {
     const user = await repository.show(parseInt(id));
     if (!user) return res.status(404).json('No user found.');
     return res.status(200).json(user);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    return res.status(400).json(error.message);
+  } catch (error) {
+    return res.status(400).json((error as Error).message);
   }
 };
 
@@ -33,9 +31,8 @@ const create = async (req: Request, res: Response) => {
     const user = await repository.create({ username, password, firstname, lastname });
 
     return res.status(201).json(user);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    return res.status(400).json(error.message);
+  } catch (error) {
+    return res.status(400).json((error as Error).message);
   }
 };
 
@@ -47,9 +44,8 @@ const authenticate = async (req: Request, res: Response) => {
 
     const token = jwt.sign(user, process.env.JWT_SECRET as jwt.Secret);
     return res.status(200).json({ token: token });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    return res.status(400).json(error.message);
+  } catch (error) {
+    return res.status(400).json((error as Error).message);
   }
 };
 

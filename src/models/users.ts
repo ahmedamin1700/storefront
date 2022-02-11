@@ -52,9 +52,10 @@ class UsersRepository {
       result = await connection.query(sql, [username, hashedPassword, firstname, lastname]);
       connection.release();
       return result.rows[0];
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      throw new Error(`can't create user with this username ${username} ${error.message}.`);
+    } catch (error) {
+      throw new Error(
+        `can't create user with this username ${username} ${(error as Error).message}.`,
+      );
     }
   };
 
@@ -74,9 +75,10 @@ class UsersRepository {
       if (!valid) throw new Error('wrong password.');
 
       return result.rows[0];
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      throw new Error(`can't authenticate user with this username ${username} ${error.message}.`);
+    } catch (error) {
+      throw new Error(
+        `can't authenticate user with this username ${username} ${(error as Error).message}.`,
+      );
     }
   };
 }
