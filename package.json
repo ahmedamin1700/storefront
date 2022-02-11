@@ -10,10 +10,10 @@
     "seed": "yarn migrate:reset && yarn migrate:up && ts-node src/seed.ts",
     "lint": "eslint --ext .ts .",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "start": "node src/server.ts",
-    "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
     "pretest": "db-migrate up --env test",
     "test": "NODE_ENV=test jasmine-ts && db-migrate reset --env test",
+    "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
+    "start": "yarn build && node dist/server.js",
     "build": "tsc"
   },
   "author": "Udacity",
