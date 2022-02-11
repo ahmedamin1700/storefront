@@ -2,53 +2,124 @@
 
 ## Getting Started
 
-This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
+This repo contains a backend API for an online store. To get started, clone this repo and run `yarn` in your terminal at the project root.
 
-## Required Technologies
-Your application must make use of the following libraries:
+You can check the database schema and API endpoints in the [REQUIREMENT.md](REQUIREMENTS.md)
+
+## Technologies
+
+The application use of the following libraries:
+
 - Postgres for the database
 - Node/Express for the application logic
 - dotenv from npm for managing environment variables
 - db-migrate from npm for migrations
 - jsonwebtoken from npm for working with JWTs
 - jasmine from npm for testing
+- bcrypt from npm for hashing passwords
+- body-parser from npm for parsing incomong requests bodies
 
-## Steps to Completion
+## Steps
 
-### 1. Plan to Meet Requirements
+### Create And Connect To Database
 
-In this repo there is a `REQUIREMENTS.md` document which outlines what this API needs to supply for the frontend, as well as the agreed upon data shapes to be passed between front and backend. This is much like a document you might come across in real life when building or extending an API. 
+- After running the docker container for postgres
+  `docker-compose up -d`.
 
-Your first task is to read the requirements and update the document with the following:
-- Determine the RESTful route for each endpoint listed. Add the RESTful route and HTTP verb to the document so that the frontend developer can begin to build their fetch requests.    
-**Example**: A SHOW route: 'blogs/:id' [GET] 
+We shall create the dev and test databases.
 
-- Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.   
-**Example**: You can format this however you like but these types of information should be provided
-Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar, publisher_id:string[foreign key to publishers table], pages:number)
+- connect to the default postgres database as the server's root user `psql -U postgres`.
+- In psql run the following to create a user
+  - `CREATE USER storefront WITH PASSWORD 'storefront';`
+- In psql run the following to create the dev and test database
+  - `CREATE DATABASE storefront_dev;`
+  - `CREATE DATABASE storefront_test;`
+- Connect to the databases and grant all privileges
+  - Grant for dev database
+    - `\c storefront_dev`
+    - `GRANT ALL PRIVILEGES ON DATABASE storefront_dev TO storefront;`
+  - Grant for test database
+    - `\c storefront_test`
+    - `GRANT ALL PRIVILEGES ON DATABASE storefront_test TO storefront;`
 
-**NOTE** It is important to remember that there might not be a one to one ratio between data shapes and database tables. Data shapes only outline the structure of objects being passed between frontend and API, the database may need multiple tables to store a single shape. 
+### Migration
 
-### 2.  DB Creation and Migrations
+You can run the command below the create migrations.
+`yarn migrate:up`
 
-Now that you have the structure of the databse outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
+## Environment Variables
 
-You must also ensure that any sensitive information is hashed with bcrypt. If any passwords are found in plain text in your application it will not pass.
+You can set your environment variables as below.
 
-### 3. Models
+```
+HOST=localhost
+PORT=3000
+NODE_ENV=dev
 
-Create the models for each database table. The methods in each model should map to the endpoints in `REQUIREMENTS.md`. Remember that these models should all have test suites and mocks.
+# Database configurations.
+PG_HOST=localhost
+PG_USER=storefront
+PG_PASSWORD=storefront
+PG_DB=storefront_dev
+PG_TEST_DB=storefront_test
 
-### 4. Express Handlers
+# Hasing
+PEPPER=thisisourapppepper
+SALT=10
 
-Set up the Express handlers to route incoming requests to the correct model method. Make sure that the endpoints you create match up with the enpoints listed in `REQUIREMENTS.md`. Endpoints must have tests and be CORS enabled. 
+# JWT secret
+JWT_SECRET=thisisjwtsecret
+TOKEN_TEST=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlcjEiLCJwYXNzd29yZCI6IiQyYiQxMCQ3Z0pQMTRtZUlpdWVCdzMwblBCME4ub2hHRnJjL0MvbVJtUWNxLjQ1dkpyQzVlMlluOFBsbSIsImZpcnN0bmFtZSI6InRlc3QiLCJsYXN0bmFtZSI6InVzZXIiLCJpYXQiOjE2NDM5MzgxMTN9.XuVTOi4-wmDYptOxvZJWWzUwlcoO9Ue_lYz4gdiBq3Y
+```
 
-### 5. JWTs
+## Automations
 
-Add JWT functionality as shown in the course. Make sure that JWTs are required for the routes listed in `REQUIUREMENTS.md`.
+All tasks are available through `yarn` scripts.
 
-### 6. QA and `README.md`
+### Linter/prettier
 
-Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database. 
+Code styling check and automatic fix is handled by ESLint. You can execute the command below:
 
-Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+```bash
+yarn lint
+yarn prettier
+```
+
+### Typescript transpiling
+
+The backend code is delivered through the `./src` folder, and the transformed output is placed under `./dist`.
+You can execute the command below:
+
+```bash
+yarn build
+```
+
+### Seeding database
+
+You can seed development database with users, products and orders to be able to use the API in dev.
+
+```bash
+yarn seed
+```
+
+### Executing Jest test
+
+The test suite validates basic functionality of the images handler helper. You can execute the command below:
+
+```bash
+yarn test
+```
+
+### Executing the server
+
+There are two modes of execution:
+
+1. Single execution (build and serve the `dist/server.js`)
+2. Execution with watcher mode and restart enabled
+
+The commands to achieve the builds described above are, respectively:
+
+```bash
+yarn start
+yarn watch
+```
