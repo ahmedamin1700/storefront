@@ -23,7 +23,7 @@ The application use of the following libraries:
 
 ### Create And Connect To Database
 
-- After running the docker container for postgres
+- After running the docker container for postgres on PORT 5432.
   `docker-compose up -d`.
 
 We shall create the dev and test databases.
@@ -115,7 +115,7 @@ yarn test
 There are two modes of execution:
 
 1. Single execution (build and serve the `dist/server.js`)
-2. Execution with watcher mode and restart enabled
+2. Execution with watcher mode and restart enabled on PORT 3000.
 
 The commands to achieve the builds described above are, respectively:
 
